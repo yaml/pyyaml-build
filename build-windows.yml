@@ -1,0 +1,38 @@
+#!./ansible/bin/ansible-playbook
+
+- hosts: windows
+
+  tasks:
+
+  - name: remove build and dist directories
+    win_file:
+      path: C:\{{ item }}
+      state: absent
+    with_items:
+    - Users\vagrant\build
+    - vagrant\dist\windows
+
+  - name: create build and dist directories
+    win_file:
+      path: C:\{{ item }}
+      state: directory
+    with_items:
+    - Users\vagrant\build
+    - vagrant\dist\windows
+
+  - name: build libyaml and pyyaml
+    script: ./files/build-windows.cmd {{ item.ver }} {{ item.arch }}
+    with_items:
+    - ver: 27
+      arch: x86
+    - ver: 27
+      arch: amd64
+    - ver: 34
+      arch: x86
+    - ver: 34
+      arch: amd64
+    - ver: 35
+      arch: x86
+    - ver: 35
+      arch: amd64
+

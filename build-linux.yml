@@ -1,0 +1,25 @@
+#!./ansible/bin/ansible-playbook
+
+- hosts: linux
+
+  tasks:
+
+  - name: remove build and dist directories
+    file:
+      path: /{{ item }}
+      state: absent
+    with_items:
+    - home/vagrant/build
+    - vagrant/dist/linux
+
+  - name: create build and dist directories
+    file:
+      path: /{{ item }}
+      state: directory
+    with_items:
+    - home/vagrant/build
+    - vagrant/dist/linux
+
+  - name: build libyaml and pyyaml
+    script: ./files/build-linux.sh
+

@@ -1,0 +1,83 @@
+#!./ansible/bin/ansible-playbook
+
+- hosts: windows
+
+  tasks:
+
+  - name: install .NET Framework 3.5
+    win_feature:
+      name: Net-Framework-Core
+
+  - name: install build tools
+    win_chocolatey:
+      name: '{{ item }}'
+    with_items:
+    - windows-sdk-7.0
+    - windows-sdk-7.1
+    - VisualCppBuildTools
+    - cmake
+    - hg
+
+  - name: download Python installers
+    win_get_url:
+      url: '{{ item.url }}'
+      dest: 'C:\Users\vagrant\Downloads\{{ item.url|basename }}'
+      force: false
+    with_items:
+    - url: https://www.python.org/ftp/python/2.7.11/python-2.7.11.amd64.msi
+    - url: https://www.python.org/ftp/python/2.7.11/python-2.7.11.msi
+    - url: https://www.python.org/ftp/python/3.4.4/python-3.4.4.amd64.msi
+    - url: https://www.python.org/ftp/python/3.4.4/python-3.4.4.msi
+    - url: https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe
+    - url: https://www.python.org/ftp/python/3.5.1/python-3.5.1.exe
+
+  - name: run MSI installers
+    win_msi:
+      path: 'C:\Users\vagrant\Downloads\{{ item.filename }}'
+      extra_args: 'ALLUSERS=1 TARGETDIR=C:\Python\{{ item.version }}'
+      wait: true
+      creates: 'C:\Python\{{ item.version }}'
+    with_items:
+    - filename: python-2.7.11.amd64.msi
+      version: 27\amd64
+    - filename: python-2.7.11.msi
+      version: 27\x86
+    - filename: python-3.4.4.amd64.msi
+      version: 34\amd64
+    - filename: python-3.4.4.msi
+      version: 34\x86
+
+  - name: run EXE installers
+    script: ./files/install-python.cmd {{ item.filename }} {{ item.version }}
+    args:
+      creates: 'C:\Python\{{ item.version }}'
+    with_items:
+    - filename: python-3.5.1-amd64.exe
+      version: 35\amd64
+    - filename: python-3.5.1.exe
+      version: 35\x86
+
+  - name: install Cython
+    script: ./files/install-cython.cmd {{ item.version }}
+    args:
+      creates: 'C:\Python\{{ item.version }}\Scripts\cython.exe'
+    with_items:
+    - version: 27\amd64
+    - version: 27\x86
+    - version: 34\amd64
+    - version: 34\x86
+    - version: 35\amd64
+    - version: 35\x86
+
+  - name: install Virtualenv
+    script: ./files/install-virtualenv.cmd {{ item.version }}
+    args:
+      creates: 'C:\Python\{{ item.version }}\Scripts\virtualenv.exe'
+    with_items:
+    - version: 27\amd64
+    - version: 27\x86
+    - version: 34\amd64
+    - version: 34\x86
+    - version: 35\amd64
+    - version: 35\x86
+

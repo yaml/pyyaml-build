@@ -1,0 +1,6 @@
+ansible_user: vagrant
+ansible_password: vagrant
+ansible_host: 127.0.0.1
+ansible_port: 55985
+ansible_connection: winrm
+ansible_winrm_scheme: http

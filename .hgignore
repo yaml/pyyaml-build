@@ -1,0 +1,8 @@
+syntax: glob
+*.retry
+ansible
+build
+dist
+libyaml
+pyyaml
+.vagrant

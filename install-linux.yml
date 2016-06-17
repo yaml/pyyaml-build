@@ -1,0 +1,33 @@
+#!./ansible/bin/ansible-playbook
+
+- hosts: linux
+
+  tasks:
+
+  - name: update package cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: install packages
+    become: true
+    apt:
+      name: '{{ item }}'
+      state: latest
+    with_items:
+    - build-essential
+    - autoconf
+    - libtool
+    - doxygen
+    - mercurial
+    - zip
+    - unzip
+    - python-dev
+    - python-pip
+    - python-virtualenv
+
+  - name: install cython
+    become: true
+    pip:
+      name: cython
+
