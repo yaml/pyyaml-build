@@ -11,6 +11,7 @@
   - name: install build tools
     win_chocolatey:
       name: '{{ item }}'
+      allow_empty_checksums: true
     with_items:
     - windows-sdk-7.0
     - windows-sdk-7.1

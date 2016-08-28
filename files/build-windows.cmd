@@ -4,7 +4,7 @@ set arch=%2
 
 set "path=%path%;C:\Python\%ver%\%arch%\Scripts"
 set "path=%path%;C:\Program Files\Mercurial"
-set "path=%path%;C:\Program Files (x86)\CMake\bin"
+set "path=%path%;C:\Program Files\CMake\bin"
 
 cd C:\Users\vagrant\build
 
