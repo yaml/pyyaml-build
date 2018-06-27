@@ -1,3 +1,4 @@
+#!/usr/bin/env ansible-playbook
 #!./ansible/bin/ansible-playbook
 
 - hosts: linux
