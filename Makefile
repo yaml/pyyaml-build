@@ -21,16 +21,16 @@ pyyaml:
 ansible:
 	# virtualenv --system-site-packages ansible    # XXX --system-site-packages seemed not great idea
 	virtualenv ansible
-	($(VENV) pip install 'pyasn1>=0.1.8' 'pywinrm>=0.1.1' 'ansible>=2.1.0.0')
+	($(VENV); pip install 'pyasn1>=0.1.8' 'pywinrm>=0.1.1' 'ansible>=2.1.0.0')
 
 .vagrant/machines/linux/virtualbox/id:
 	vagrant up linux
-	($(VENV) ./install-linux.yml)
+	($(VENV); ./install-linux.yml)
 	vagrant halt linux
 
 .vagrant/machines/windows/virtualbox/id:
 	vagrant up windows
-	($(VENV) ./install-windows.yml)
+	($(VENV); ./install-windows.yml)
 	vagrant halt windows
 
 # update:
@@ -41,12 +41,12 @@ build: update build-linux build-windows
 
 build-linux:
 	vagrant up linux
-	($(VENV) ./build-linux.yml)
+	($(VENV); ./build-linux.yml)
 	vagrant halt linux
 
 build-windows:
 	vagrant up windows
-	($(VENV) ./build-windows.yml)
+	($(VENV); ./build-windows.yml)
 	vagrant halt windows
 
 clean:
